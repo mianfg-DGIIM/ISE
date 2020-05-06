@@ -1,8 +1,8 @@
 `ISE` > Prácticas > **Práctica 2.** Instalación y configuración de servicios
 
-## Lección 1. SSH + Firewall
+# Lección 1. SSH + Firewall
 
-### SSH
+## SSH
 
 * **SSH** es un reemplazamiento de Telnet. Ambos son protocolos de aplicación de shell remotas (nos podemos conectar por red con un ordenador en cualquier ubicación, mostrándose un _shell prompt_ para poder ejecutar comandos). La principal diferencia es:
   * TELNET realiza la comunicación en abierto, sin cifrar. --> Es inseguro, y no se utiliza.
@@ -12,7 +12,7 @@
 
 > Nota: mirar `fail2ban`, entra en el examen pero no lo ha explicado.
 
-#### Cifrado simétrico y asimétrico
+### Cifrado simétrico y asimétrico
 
 * **Cifrado simétrico:** misma llave para cifrar y descifrar. Ej. de protocolos: DES, TDES (Triple-DES, es el estándar hoy en día).
   * Si queremos compartir información entre varios, podemos tener:
@@ -39,7 +39,7 @@
       * Vemos si coincide con lo que CLI ha enviado a SERV.
   * Computacionalmente costoso. Por eso normalmente la comunicación se hace intercambiando una contraseña compartida con cifrado asimétrico, y realizando la comunicación con una clave pública.
 
-#### Firma digital vs. cifrado digital
+### Firma digital vs. cifrado digital
 
 * Funcionan con **algoritmos hash**. El más conocido es el Standard Hash Algorithm, SHA.
 
@@ -76,15 +76,15 @@
     * Llave pública (puede tener además una serie de datos).
     * Firmada electrónicamente (con su hash) y cifrada por una entidad de confianza (autoridad certificadora), como la Fábrica de Moneda y Timbre.
 
-### Instalación
+## Instalación
 
-#### Prerequisitos
+### Prerequisitos
 
 * Ubuntu y CentOS con instalación estándar, red NAT y Host-Only.
 
-#### Ubuntu
+### Ubuntu
 
-###### 1. Instalamos SSH
+##### 1. Instalamos SSH
 
 * Vemos si ya está instalado:
 
@@ -146,7 +146,7 @@
       systemctl status sshd
       ```
 
-###### 2. Nos conectamos desde el _host_ a Ubuntu
+##### 2. Nos conectamos desde el _host_ a Ubuntu
 
 * Antes comprobamos que tenemos conectividad de red:
 
@@ -159,7 +159,7 @@
 
   ```
   %> ssh <username>@<IP o dominio, se resuelve DNS>
-  # en este caso:
+   en este caso:
   %> ssh <username>@192.168.56.10
   ```
 
@@ -181,7 +181,7 @@
 
 > NOTA: los comandos especificados con `%>` son los insertados en el SSH desde la consola del cliente (realmente es la terminal del servidor).
 
-###### 3. Configuración del servidor (Ubuntu Server): cambio de puerto de SSH
+##### 3. Configuración del servidor (Ubuntu Server): cambio de puerto de SSH
 
 Tenemos dos ficheros importantes en `/etc/ssh`:
 
@@ -208,14 +208,14 @@ Esto no se usa para garantizar seguridad, un scan de puertos vería rápidamente
 
 Volvemos al puerto `22`.
 
-#### Contenido de la carpeta `.ssh` (cliente)
+### Contenido de la carpeta `.ssh` (cliente)
 
 * `~/.ssh/id_rsa`: tu clave privada.
 * `~/.ssh/id_rsa.pub`: tu clave pública.
 * `~/.ssh/authorized_keys`: contiene una lista de las claves públicas autorizadas para servidores. Cuando el cliente se conecta al servidor, este autentica al cliente comprobando la firma de su clave pública guardada en este archivo.
 * `~/.ssh/known_hosts`: contiene claves DSA públicas de los servidores SSH accedidos por el usuario. Este archivo es muy importante para asegurar que el cliente SSH está conectando con el servidor SSH correcto.
 
-###### 4. Utilidad SSH: lanzar comandos en servidores remotos
+##### 4. Utilidad SSH: lanzar comandos en servidores remotos
 
 Podemos insertar en SSH comandos directamente haciendo:
 
@@ -223,14 +223,14 @@ Podemos insertar en SSH comandos directamente haciendo:
 ssh <user>@<IP> "<comando>"
 ```
 
-###### Algunas observaciones
+##### Algunas observaciones
 
 * `ssh` juega un papel fundamental en la automatización de sistemas (ej. Ansible)
 * Normalmente, reducimos todo a un servicio `ssh` junto al servicio normal, para evitar puntos de ataque.
 
-#### CentOS
+### CentOS
 
-###### 1. Instalamos SSH
+##### 1. Instalamos SSH
 
 En CentOS viene instalado por defecto, lo comprobamos con:
 
@@ -240,7 +240,7 @@ $> systemctl status sshd
 
 Comprobamos la conectividad con `ping` entre host>MV y MV>host.
 
-###### 2. Nos conectamos desde el host por SSH
+##### 2. Nos conectamos desde el host por SSH
 
 Nos podemos conectar con la cuenta de `root`. Normalmente esto no nos dejará, solemos tener un usuario que pueda convertirse en root.
 
@@ -248,7 +248,7 @@ Nos podemos conectar con la cuenta de `root`. Normalmente esto no nos dejará, s
 %> ssh root@192.168.56.20
 ```
 
-###### 3. Configuramos `sshd_config`
+##### 3. Configuramos `sshd_config`
 
 No permitiremos el login de root, con la opción:
 
@@ -270,18 +270,18 @@ Si intentamos iniciar sesión con root en el host, no nos dejará:
 
 Deberíamos entrar con un usuario no privilegiado.
 
-###### 4. Cambiamos el hostname de la máquina
+##### 4. Cambiamos el hostname de la máquina
 
 Cambiamos el fichero `/etc/hostname`, cambiamos la primera y única línea por el nombre que queramos.
 
-###### 5. Creamos una clave SSH en Ubuntu
+##### 5. Creamos una clave SSH en Ubuntu
 
 * `ssh-keygen`: crea la clave en `~/.ssh/id_rsa` y en `~/.ssh/id_rsa.pub`.
   * No ponemos passphrase por comodidad, en producción sí lo usaríamos.
   * Con `-c` podemos poner comentarios en la clave.
 * Si perdemos la clave pública, la podemos recuperar en la privada.
 
-###### 6. Copiamos la clave pública de Ubuntu en CentOS
+##### 6. Copiamos la clave pública de Ubuntu en CentOS
 
 ```
 ssh-copy-id <usuario>@<ip (CentOS)>
@@ -292,13 +292,13 @@ ssh-copy-id <usuario>@<ip (CentOS)>
 * En CentOS, comprobamos la clave haciendo `less ~/.shh/authorized_keys`.
 * De este modo podremos conectarnos sin necesidad de insertar contraseña.
 
-###### 7. Vemos los mensajes que se transfieren en el protocolo SSH
+##### 7. Vemos los mensajes que se transfieren en el protocolo SSH
 
 ~~~
 ssh <usuario>@<ip> -vv
 ~~~
 
-###### 8. Añadir hostname
+##### 8. Añadir hostname
 
 De este modo, podremos hacer `ssh <usuario>@<hostname>` en lugar de `ssh <usuario>@<ip>`.
 
@@ -319,12 +319,12 @@ De este modo, podremos hacer `ssh <usuario>@<hostname>` en lugar de `ssh <usuari
 
   * Podemos especificar muchos más parámetros de este modo.
 
-###### 9. Copiamos la clave de CentOS en Ubuntu a mano
+##### 9. Copiamos la clave de CentOS en Ubuntu a mano
 
 * Copaimos la clave de CentOS del clipboard de nuestro sistema.
 * Editamos en Ubuntu `~/.ssh/authorized_keys` y pegamos lo que tenemos en el clipboard del sistema.
 
-###### 10. Usamos `ssh-agent` para trabajar con las claves de nuestro host
+##### 10. Usamos `ssh-agent` para trabajar con las claves de nuestro host
 
 Descripción del problema:
 
