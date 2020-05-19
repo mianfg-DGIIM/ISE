@@ -1,6 +1,6 @@
 `ISE` > Prácticas > **Práctica 3.** Monitorización y _profiling_
 
-## Introducción
+# Introducción
 
 **Monitorización:** comportamiento de sistemas en entornos de producción o, como mucho, de preproducción.
 
@@ -10,7 +10,7 @@
 
 **Profiling**: evaluación de prestaciones antes de llegar a ejecución. Lo tienen todos los lenguajes de programación (ej. ver qué método consume más tiempo, más memoria...).
 
-## Lección 1. Monitorización del Sistema Operativo
+# Lección 1. Monitorización del Sistema Operativo
 
 ### Monitorización del kernel con `dmesg`
 
@@ -42,7 +42,7 @@ Los archivos de logging suelen ocupar mucho tamaño, para eso usamos `logrotate`
 
 Podemos configurarlo para que, por ejemplo, a cierta hora todos los días comprima los logs, los guarde y cuando tenga un cierto número de archivos comprimidos los comience a borrar. Su configuración se encuentra en `/etc/logrotate.conf`, pero en ésta tenemos un include de `/etc/logrotate.d`.
 
-----
+---
 
 ### Comandos interesantes
 
