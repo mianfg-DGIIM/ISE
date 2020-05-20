@@ -108,6 +108,14 @@ Herramienta en consola sin interfaz gráfica.
 
 Hay que hacer una red de monitorización en la que hay que monitorizar a la máquina Ubuntu además de a la CentOS.
 
+### Protocolo SNMP
+
+El _protocolo simple de administración de redes_ (**SNMP**) es un protocolo de capa de aplicación definido por la IAB en RFC1157 para intercambiar información de administración entre dispositivos de red. Forma parte del conjunto de protocolos TCP/IP.
+
+SNMP es uno de los protocolos ampliamente aceptados para administrar y monitorizar elementos de red. La mayoría de los elementos de red de nivel profesional vienen con un agente SNMP incluido. Estos agentes deben estar habilitados y configurados para comunicarse con el sistema de administración de red (NMS).
+
+Es uno de los protocolos que usa Zabbix.
+
 ### Instalación y configuración de Zabbix
 
 Vamos a instalar Zabbix en Ubuntu para monitorizar CentOS.
@@ -336,6 +344,8 @@ Lo instalaremos siguiendo [este manual](https://www.zabbix.com/documentation/3.4
 
 * Ansible se conecta con un equipo y lo configura. Puede lanzarse en paralelo (muchas hebras, muchos equipos simulténeamente). Lo veremos en el ámbito de la automatización, pero donde más se utiliza es en el uso de Playbooks (término propio de Ansible): ficheros de texto que permiten definir la configuración de un equipo.
 
+  * Estos ficheros son gestionables en un repositorio SCM.
+
 * Veremos Ansible en el contexto de ejecución de comandos (aunque nos anima a ver los Playbooks).
 
 * Ejecuta Ansible desde el ordenador anfitrión, ha creado una máquina más para hacer gesitones en tres máquinas.
@@ -370,7 +380,7 @@ Lo instalaremos siguiendo [este manual](https://www.zabbix.com/documentation/3.4
 
   `m` viene de _módulo_. Hemos puesto el nombre del catálogo. Nos dice que es _unreachable_. Esto puede ser por temas de _firewall_. Luego veremos cómo resolverlo.
 
-  * En la dirección de la referencia tenemos una lista de los módulos de Ansible.
+  * En la dirección de la referencia tenemos una lista de los **módulos** de Ansible. Los módulos dicen qué es lo que puede hacer: instalar paquetes, crear usuarios, crear redes, iniciar servicios... Si casualmente lo que queremos hacer no tiene módulo existe se puede crear. **Galaxy** es un repositorio donde los usuarios comparten los módulos que han creado.
 
   * El error se debe a que nos estamos intentando conectar como el usuario del _host_. Si el usuario no existe, no se conectará. Para ello debemos hacer que se conecte usando otro usuario:
 
@@ -423,7 +433,7 @@ Lo instalaremos siguiendo [este manual](https://www.zabbix.com/documentation/3.4
   De este modo podemos hacer `ping` a los equipos `lamp`:
 
   ```
-  ansible lamb -m ping
+  ansible lamp -m ping
   ```
 
 * Módulo `shell`
