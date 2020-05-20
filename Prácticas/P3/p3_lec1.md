@@ -113,7 +113,7 @@ En `/etc/crontab` establecemos las reglas.
 
 Como usuario no privilegiado también se pueden programar tareas periódicas con `crontab -e`.
 
-Para facilitarnos trabajar con expresiones de `cron` hay muchas páginas online, como [crontab.guru](https://crontab.guru).
+> **Importante:** Para facilitarnos trabajar con expresiones de `cron` hay muchas páginas online, como [crontab.guru](https://crontab.guru).
 
 ### Monitorización del estado del RAID
 
