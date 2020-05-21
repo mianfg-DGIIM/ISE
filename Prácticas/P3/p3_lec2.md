@@ -209,13 +209,13 @@ Vamos a instalar Zabbix en Ubuntu para monitorizar CentOS.
    $U> update-rc.d zabbix-proxy enable
    ~~~
 
-8. Reiniciamos Apache.
+8. Configuramos el timezone de Apache, descomentando la línea `date.timezone` del archivo `/etc/apache2/conf-enabled/zabbix.conf`.
+
+9. Reiniciamos Apache.
 
    ~~~
    $U> service apache2 restart
    ~~~
-
-9. Configuramos el timezone de Apache, descomentando la línea `date.timezone` del archivo `/etc/apache2/conf-enabled/zabbix.conf`.
 
 10. Instalamos el agente.
 
