@@ -6,6 +6,8 @@
 
 Herramienta en consola sin interfaz gráfica.
 
+* La primera línea nos da la misma información que `uptime`.
+
 * **load average:** carga media, se usa en evaluación del comportamiento de servidores (carga de CPU).
 
   * Es una media exponencial decayente del uso de la CPU durante los últimos 1 minuto, 5 minuto, 15 minutos (para cada uno de los tres valores, resp.).
@@ -104,9 +106,24 @@ Herramienta en consola sin interfaz gráfica.
   * Proxy: estrategia para poder escalar. Cuando hay muchos equipos, un solo servidor no podrá muestrearlos todos. Se monta un proxy (un server en chiquitito) que muestrea un grupo local de equipos. De este modo, el server consulta a distintos proxys. Cada proxy mandará la información de varios equipos.
     * Cuando tenemos una comunicación TCP/IP, el tiempo de apertura es muy grande, por eso nos interesa que envíen mucha información.
   * Get: recomendado para ejercicio final de clase. Implementa una interfaz REST para consultar un agente de Zabbix. Es útil para depurar problemas de comunicación agente-servidor. Lanzamos una petición directamente y vemos si hay algún problema. Esto no se ve de forma tan sencilla en las gráficas del server. También permite desarrollar los propios clientes.
+    * Es un GET REST.
+    * Sirve también para crear un cliente propio que use una API REST.
   * Frontend
 
 Hay que hacer una red de monitorización en la que hay que monitorizar a la máquina Ubuntu además de a la CentOS.
+
+#### Algunas anotaciones respecto a Zabbix
+
+* Los agentes usan el puerto `10050`.
+* En el frontend, en la pestaña **Monitoring**:
+  * **Hosts:** muestra los equipos que estamos monitorizando.
+  * **Latest data:** podemos hacer filtros, grupos de máquinas.
+  * **Graph:**
+    * Muestra los gráficos de los filtros que hayamos creado.
+    * La gráfica no se refresca en tiempo real para evitar sobrecargas del sistema.
+    * Hay un cierto tiempo de muestreo, gestionable desde **Configuration** para cada máquina.
+    * Un cambio en el servidor puede provocar un punto muerto en el que no sea visible el cambio desde Zabbix, motivado por el tiempo entre muestreo.
+* En entorno de producción, siempre se tiene una pantalla o proyección con el **dashboard** para vigilar el correcto funcionamiento del sistema.
 
 ### Protocolo SNMP
 

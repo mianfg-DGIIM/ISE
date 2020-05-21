@@ -5,7 +5,11 @@
 **Monitorización:** comportamiento de sistemas en entornos de producción o, como mucho, de preproducción.
 
 * De telemetría (lección 2): evaluar las variables físicas y a nivel de SO (plataforma) de un servidor (uso de memoria, CPU, accesos a disco, a red, no. usuarios conectados...).
-* En el contexto de logging: cuando las aplicaciones o el middleware (base de datos, Apache) generan líneas de logs. Se suelen procesar (ver _ELK Stack_).
+* En el contexto de logging: cuando las aplicaciones o el middleware (base de datos, Apache) generan líneas de logs.
+  * Se suelen procesar: _ELK Stack_.
+    * Toma los logs y los trocea para enviarlos a una BD.
+    * BD optimizadas para lectura y no escritura (NoSQL), como MongoDB.
+    * Tienen dashboard _Kibana_ para mostrar datos.
 * De trazabilidad: siguen el comportamiento de usuario dentro de aplicaciones. Ej. Google Analytics.
 
 **Profiling**: evaluación de prestaciones antes de llegar a ejecución. Lo tienen todos los lenguajes de programación (ej. ver qué método consume más tiempo, más memoria...).
@@ -22,6 +26,10 @@ $ dmesg
 
 Da información del búfer circular. El mayor uso de`dmesg` es depurar momentos críticos del SO, como los errores de arranque, que no aparecen en la consola. Se puede consultar más tarde esto.
 
+* Si el buffer se llena, se sobreescribe lo más antiguo.
+* El tamaño del buffer puede cambiarse recompilando el kernel. El profesor lo intenta hacer con `sysctl`, pero no lo consigue.
+* Lo usamos para depurar aspectos críticos del SO. Ej. al lanzar el SO, muchos comandos que no se muestran en consola se pueden consultar aquí.
+
 Las opciones son: `-H` imprimir el tiempo en un formato humano, `-w` que se quede esperando.
 
 Los mensajes vienen del código fuente del kernel de Linux, así que lo mejor es copiarlos y pegarlos en Google a ver si alguien se ha peleado antes.
@@ -29,10 +37,9 @@ Los mensajes vienen del código fuente del kernel de Linux, así que lo mejor es
 * El profesor coge un USB y lo pincha a un Mac.
 * En VirtualBox puede ser que necesitemos hacer:
   * En USB le damos a añadir el USB que hemos introducido. Entonces se hará visible en la MV.
-
 * En `dmesg` irá apareciendo información del USB.
 
----
+### Logging
 
 En `/var/log` tenemos información importante, es un directorio de contenido variable en el que se almacenan los logs del sistema. Destacamos los archivos `wtmp` y `btmp` que son binarios, también `syslog`. `syslogd` es un daemon lanzado en memoria que permite que otros procesos envíen líneas de log sobre este fichero. También tenemos `rsyslogd`que permiten en remoto.
 
@@ -41,8 +48,6 @@ En CentOS se ha reemplazado por servicios más modernos (ver memoria).
 Los archivos de logging suelen ocupar mucho tamaño, para eso usamos `logrotate`, que suele colocar `.1`, `.2` al final de los ficheros, o comprimiéndolos: `.1.gz`, `.2.gz`.
 
 Podemos configurarlo para que, por ejemplo, a cierta hora todos los días comprima los logs, los guarde y cuando tenga un cierto número de archivos comprimidos los comience a borrar. Su configuración se encuentra en `/etc/logrotate.conf`, pero en ésta tenemos un include de `/etc/logrotate.d`.
-
----
 
 ### Comandos interesantes
 
@@ -111,7 +116,7 @@ En `/etc/cron` tenemos una definición de directorios (en Ubuntu tienen una form
 
 En `/etc/crontab` establecemos las reglas.
 
-Como usuario no privilegiado también se pueden programar tareas periódicas con `crontab -e`.
+Como usuario no privilegiado también se pueden programar tareas periódicas con `crontab -e`, a nivel de usuario.
 
 > **Importante:** Para facilitarnos trabajar con expresiones de `cron` hay muchas páginas online, como [crontab.guru](https://crontab.guru).
 
@@ -126,6 +131,8 @@ Como usuario no privilegiado también se pueden programar tareas periódicas con
 ~~~~
 * * * * * root echo "HOLA" 2>&1 | logger -t isep3l1
 ~~~~
+
+`logger` añade mensajes al `syslog`.
 
 Nunca escribir scripts de `cron` dentro del propio `crontab` porque se hacen muy difíciles de ejecutar. Mejor hacer:
 
