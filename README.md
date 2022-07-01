@@ -1,6 +1,6 @@
-[⬅ Más asignaturas del DGIIM](https://github.com/mianfg/DGIIM)
+[⬅ Más asignaturas del DGIIM](https://github.com/mianfg-DGIIM)
 
-![Repo image](https://repository-images.githubusercontent.com/261710598/9f0d9080-eae8-11ea-93c6-d7413cb68a48)
+![Repo image](https://repository-images.githubusercontent.com/261710598/de0e3370-a81a-4246-8cb9-db93938713b1)
 
 # `ISE` Ingeniería de Servidores
 
